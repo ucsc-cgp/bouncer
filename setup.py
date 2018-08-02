@@ -15,8 +15,8 @@ def read(fname):
 
 
 setup(
-    name="cgp-dss-data-loader",
-    description="Simple data loader for CGP HCA Data Store",
+    name="cgp-bouncer",
+    description="The whitelist checker for authentication with CGP HCA Data Store",
     packages=find_packages(),  # include all packages
     url="https://github.com/ucsc-cgp/bouncer",
     long_description=read('README.md'),

@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ucsc-cgp/bouncer.svg?branch=master)](https://travis-ci.org/ucsc-cgp/bouncer)
+
 # bouncer
 The whitelist checker for authentication with CGP HCA Data Store
 
