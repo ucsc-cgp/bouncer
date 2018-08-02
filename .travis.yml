@@ -1,0 +1,14 @@
+language: python
+python:
+- '3.6'
+install:
+- pip install .
+script:
+- python -m unittest -v test.py
+#deploy:
+#  provider: pypi
+#  on:
+#    tags: true
+#  user: jessebrennan
+#  password:
+#    secure:
