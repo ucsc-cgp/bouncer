@@ -47,11 +47,13 @@ class Bouncer(object):
                 raise SecretManagerException("The request was invalid due to:", e) from e
             elif e.response['Error']['Code'] == 'InvalidParameterException':
                 raise SecretManagerException("The request had invalid params:", e) from e
+            else:
+                raise
         else:
             secret_string = get_secret_value_response['SecretString']
             secret_dict = json.loads(secret_string)
             try:
                 return secret_dict[SECRET_KEY].split(',')
             except KeyError as e:
-                raise SecretManagerException(f"Your secret is misformatted. Expected key: {SECRET_KEY}, "
-                                             f"actually found: {list(secret_dict.keys())}")
+                raise SecretManagerException("Your secret is misformatted. Expected key: {}, actually found: {}"
+                                             .format(SECRET_KEY, list(secret_dict.keys())))
