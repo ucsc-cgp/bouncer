@@ -1,0 +1,2 @@
+include README.md VERSION
+include *.txt
