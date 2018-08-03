@@ -16,7 +16,7 @@ def read(fname):
 
 setup(
     name="cgp-bouncer",
-    description="The whitelist checker for authentication with CGP HCA Data Store",
+    description="Simple email whitelist checker backed by the AWS Secrets Manager",
     packages=find_packages(),  # include all packages
     url="https://github.com/ucsc-cgp/bouncer",
     long_description=read('README.md'),

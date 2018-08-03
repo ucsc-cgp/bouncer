@@ -33,7 +33,7 @@ class Bouncer(object):
 
         :param email: Google email address for which authorization is to be determined
         :return: True if the email address is authorized, False if not authorized
-        :exception: <TBD> If an error occurs.
+        :exception SecretManagerException: If an error occurs.
         """
         return email in self.whitelist()
 
@@ -50,4 +50,8 @@ class Bouncer(object):
         else:
             secret_string = get_secret_value_response['SecretString']
             secret_dict = json.loads(secret_string)
-            return secret_dict[SECRET_KEY].split(',')
+            try:
+                return secret_dict[SECRET_KEY].split(',')
+            except KeyError as e:
+                raise SecretManagerException(f"Your secret is misformatted. Expected key: {SECRET_KEY}, "
+                                             f"actually found: {list(secret_dict.keys())}")
