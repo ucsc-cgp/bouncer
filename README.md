@@ -17,10 +17,14 @@ Instead of the steps above clone the repo, `cd` into the repo, and run
 ```
 pip install -e .
 ```
+and
+```
+pip install -r requirements-dev.txt
+```
 
 To test, run
 ```
-python -m unittest -v test.py
+tox
 ```
 ## how to use
 
