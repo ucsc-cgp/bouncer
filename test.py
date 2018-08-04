@@ -29,6 +29,11 @@ class TestBouncer(unittest.TestCase):
             SecretString=json.dumps({'emailZZZ': 'whitelisted@example.com,alsogood@example.com,metoo@example.com'}),
         )
 
+    @classmethod
+    def tearDownClass(cls):
+        client.delete_secret(SecretId=cls.good_secret_id)
+        client.delete_secret(SecretId=cls.bad_secret_id)
+
     def test_valid_secret_name(self):
         """Tests the happy path"""
         bouncer = Bouncer(self.good_secret_id)
@@ -52,7 +57,3 @@ class TestBouncer(unittest.TestCase):
         """
         bouncer = Bouncer(self.bad_secret_id)
         self.assertRaises(SecretManagerException, bouncer.is_authorized, 'whitelisted@example.com', )
-
-    @classmethod
-    def tearDownClass(cls):
-        client.delete_secret(SecretId=cls.good_secret_id)
