@@ -1,0 +1,15 @@
+language: python
+python:
+- '2.7'
+- '3.6'
+install:
+- pip install tox-travis
+- pip install .
+script: tox
+deploy:
+  provider: pypi
+  on:
+    tags: true
+  user: jessebrennan
+  password:
+    secure: C3eL+7jWpHhhXBpyQV8WFzVj/dHbUb9lOa77R8QsOFG73SnacJZlrAG0YPcgJVWYM9ZfJ+OXuY6DKFVcw2PgAULWVgIgAtXY4xvnvXDP6h6snX1dFPGUl6+qwDZIsQqu+OCUglF7yKZPk62/N3nvOgakUq1QvWPtF+9ALi+ttygM9Ezl+EnrwGtrmu7JtvqoxAuYXW1m9BiJAz4I8WqAItWialpi2r1eANJ0WqJZnpCAfLQWk+KawSb3Z5GpjT66fhYNhDfKaqxPHUg5wsYZjUog6JcvD4q3Hn2zaHWegiz8ZDftMopSDsFyEY3oqzTg/2+nFMv3a+X5/aBRdBwKc6cxoWnXcAX8oNe9LmKXJJ03R0GtJSJ/5J8Qcx41G2ycvraU2uoYqBCUnVCaSEJeJkKvI9p144UloEhFLHE1odEpiKiF9k9Fuxvb6H6AfY/OqlRl9L7dPNSZu2fkrU+35Nc0U6bCcrgFH4ln+aAGmmldcKIMlZt9FmKshChdNTlDb38xzuN1cEKThekl+F0xGJJAkuwfdkjAt+6ILYydLSQCHwj8StAQBr/gLyPloqxnqqlVzHoK4IQhnfZzX2wY4wROtNQx59sjoUUEjPGJCKI2vahiqFskgMPP7Ri5SyNGanrpQ1omeY2tEdHyobsM4XVnWJ2SxxGKs4guHpzAvHA=
