@@ -1,10 +1,11 @@
 language: python
 python:
+- '2.7'
 - '3.6'
 install:
+- pip install tox-travis
 - pip install .
-script:
-- python -m unittest -v test.py
+script: tox
 deploy:
   provider: pypi
   on:
