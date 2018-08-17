@@ -49,6 +49,68 @@ tox
    select **Edit**. 
 1. Add your email with **NO WHITESPACE** to the comma separated list
    under the key `email` and select **Save**.
+   
+### allowing access to the whitelist
+Programs which use the whitelist, such as the Commons HCA DSS, must be given
+access to the email whitelist secret in Secrets Manager using AWS IAM policy configuration.
+To add an IAM policy for a specific secret, perform the following steps 
+(which currently can only be performed through the AWS CLI, not the AWS Console UI):
+1. Ensure that recent version of `awscli` is installed:
+    ```
+    pip install --upgrade awscli
+    ```
+2. Create a file containing the desired policy to control the secret.
+    For example, to allow a DSS API lambda to get a secret value:
+    * DSS API Lambda Role ARN: `arn:aws:iam::719818754276:role/dss-commonsdev`
+    * Secret Name: `commons/dev/whitelist`
+    * Secret ARN: `arn:aws:secretsmanager:us-west-2:719818754276:secret:commons/dev/whitelist-QoQLrQ`
+    
+    create a policy like the following:
+    ```
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Principal": {"AWS": "arn:aws:iam::719818754276:role/dss-commonsdev" },
+                "Action": "secretsmanager:GetSecretValue",
+                "Resource": "arn:aws:secretsmanager:us-west-2:719818754276:secret:commons/dev/whitelist-QoQLrQ"
+            }
+        ]
+    }
+    ```
+    
+    Note: This type of policy configuration can also be used to control which users can access or modify the secret.
+
+3. Run: 
+    ```
+    aws secretsmanager put-resource-policy --secret-id commons/dev/whitelist --resource-policy file://secretpolicy.json
+    ```
+    which should produce output like the following:
+    ```
+    {
+        "ARN": "arn:aws:secretsmanager:us-west-2:719818754276:secret:commons/dev/whitelist-QoQLrQ",
+        "Name": "commons/dev/whitelist"
+    }
+    ```
+
+For more information, see the following AWS documentation:
+* [Overview of Managing Access Permissions to Your Secrets Manager Secrets](https://docs.aws.amazon.com/secretsmanager/latest/userguide/auth-and-access_overview.html)
+* [Using Identity-based Policies (IAM Policies) for Secrets Manager](https://docs.aws.amazon.com/secretsmanager/latest/userguide/auth-and-access_identity-based-policies.html)
+* [Using Resource-based Policies for Secrets Manager](https://docs.aws.amazon.com/secretsmanager/latest/userguide/auth-and-access_resource-based-policies.html)
+* [Actions, Resources, and Context Keys You Can Use in an IAM Policy or Secret Policy for AWS Secrets Manager](https://docs.aws.amazon.com/secretsmanager/latest/userguide/reference_iam-permissions.html)
+* [Managing a Resource-based Policy for a Secret](https://docs.aws.amazon.com/secretsmanager/latest/userguide/manage_secret-policy.html)
+    * This reference is the most specific, and likely to be the most helpful.
+
+#### troubleshooting whitelist access issues
+With respect to the example described above, incorrect or missing policy configuration for a secret will typically result in both of the following:
+* An HTTP code `500 Internal server error` being reported by the client
+* A detailed error message written to the Lambda log describing the problem in detail. For example:
+    ```
+    ...
+    botocore.exceptions.ClientError: An error occurred (AccessDeniedException) when calling the GetSecretValue operation: User: arn:aws:sts::719818754276:assumed-role/dss-commonsdev/dss-commonsdev is not authorized to perform: secretsmanager:GetSecretValue on resource: arn:aws:secretsmanager:us-west-2:719818754276:secret:commons/commonsdev/whitelist-wZ3Tkl
+    ```
+This may be resolved by identifying and correcting the policy configuration error.
 
 ### using bouncer to check the whitelist
 Using is simple!
