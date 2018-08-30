@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/ucsc-cgp/bouncer.svg?branch=master)](https://travis-ci.org/ucsc-cgp/bouncer)
+[![PyPI version](https://badge.fury.io/py/cgp-bouncer.svg)](https://badge.fury.io/py/cgp-bouncer)
 
 # bouncer
 Simple email whitelist checker backed by the AWS Secrets Manager
